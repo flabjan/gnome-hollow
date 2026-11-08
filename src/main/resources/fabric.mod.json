@@ -4,19 +4,25 @@
   "version": "${version}",
   "name": "Gnome Hollow",
   "description": "Gnome dorpen in Dark Forest en Taiga met werkende gnomes: Healer, Warrior, Farmer, Fisherman, Builder en Nitwit.",
-  "authors": ["Claude (voor de gebruiker)"],
+  "authors": [
+    "Claude (voor de gebruiker)"
+  ],
   "license": "MIT",
   "icon": "assets/gnomehollow/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["dev.gnomehollow.GnomeHollow"],
-    "client": ["dev.gnomehollow.client.GnomeHollowClient"]
+    "main": [
+      "dev.gnomehollow.GnomeHollow"
+    ],
+    "client": [
+      "dev.gnomehollow.client.GnomeHollowClient"
+    ]
   },
   "depends": {
     "fabricloader": ">=0.19.3",
     "minecraft": "~26.2",
     "java": ">=25",
-    "fabric-api": "*",
-    "geckolib": ">=5.5.2"
+    "fabric-api": ">=0.158.0",
+    "geckolib": ">=5.5.5"
   }
 }
