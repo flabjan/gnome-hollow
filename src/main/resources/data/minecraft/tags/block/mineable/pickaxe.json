@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "gnomehollow:gnome_shingles",
+    "gnomehollow:gnome_shingle_stairs",
+    "gnomehollow:gnome_shingle_slab"
+  ]
+}
