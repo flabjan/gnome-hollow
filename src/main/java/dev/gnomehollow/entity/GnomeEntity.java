@@ -56,15 +56,20 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.gnome.idle");
 	private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.gnome.walk");
 	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.gnome.attack");
-	private static final RawAnimation WORK = RawAnimation.begin().thenLoop("animation.gnome.work");
-	private static final RawAnimation FISH = RawAnimation.begin().thenLoop("animation.gnome.fish");
-	private static final RawAnimation PLAY = RawAnimation.begin().thenLoop("animation.gnome.play");
+	// Werk-animaties zijn "play once" en worden door aiStep() steeds opnieuw gestart zolang het werk duurt;
+	// zo is er geen "stop"-aanroep nodig (die API verschilt per GeckoLib-versie).
+	private static final RawAnimation WORK = RawAnimation.begin().thenPlay("animation.gnome.work");
+	private static final RawAnimation FISH = RawAnimation.begin().thenPlay("animation.gnome.fish");
+	private static final RawAnimation PLAY = RawAnimation.begin().thenPlay("animation.gnome.play");
+	private static final RawAnimation NONE = RawAnimation.begin().thenLoop("animation.gnome.none");
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private boolean homeSet;
 	private BlockPos homePos;
 	private int built;
 	private boolean playingMusic;
+	private String actionAnim;
+	private int actionPeriod;
 	private int greetCooldown = 100;
 
 	public GnomeEntity(EntityType<? extends GnomeEntity> type, Level level) {
@@ -147,6 +152,10 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 				this.voice(ModSounds.HEAL, 1.0F);
 			}
 		}
+		// Werk-animatie herhalen zolang de gnome aan het werk is.
+		if (!this.level().isClientSide() && this.actionAnim != null && this.tickCount % this.actionPeriod == 0) {
+			this.triggerAnim("action", this.actionAnim);
+		}
 		// Groeten: een vriendelijk "hii-hii!" als een speler dichtbij komt.
 		if (!this.level().isClientSide() && this.isAlive()) {
 			if (this.greetCooldown > 0) {
@@ -206,14 +215,19 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 
 	public void startAnim(String name) {
 		if (!this.level().isClientSide()) {
+			this.actionAnim = name;
+			this.actionPeriod = switch (name) {
+				case "fish" -> 60;
+				case "play" -> 12;
+				default -> 18;
+			};
 			this.triggerAnim("action", name);
 		}
 	}
 
 	public void stopAnim() {
-		if (!this.level().isClientSide()) {
-			this.stopTriggeredAnimation("action", null);
-		}
+		// De laatste animatie speelt nog uit en stopt dan vanzelf.
+		this.actionAnim = null;
 	}
 
 	// ---- opslaan ----
@@ -305,7 +319,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<GnomeEntity>("move", 4,
 				state -> state.isMoving() ? state.setAndContinue(WALK) : state.setAndContinue(IDLE)));
-		controllers.add(new AnimationController<GnomeEntity>("action", 2, state -> PlayState.STOP)
+		controllers.add(new AnimationController<GnomeEntity>("action", 2, state -> state.setAndContinue(NONE))
 				.triggerableAnim("attack", ATTACK)
 				.triggerableAnim("work", WORK)
 				.triggerableAnim("fish", FISH)

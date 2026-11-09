@@ -195,6 +195,9 @@ def make_anims():
         "body": {"position": kf([(0,[0,0,0]),(0.3,[0,0.6,0]),(0.6,[0,0,0])])},
         "head": {"rotation": kf([(0,[0,0,8]),(0.3,[0,0,-8]),(0.6,[0,0,8])])},
     }}
+    anims["animation.gnome.none"] = {"loop": True, "animation_length": 1.0, "bones": {"root": {"position": kf([(0,[0,0,0]),(1.0,[0,0,0])])}}}
+    for k in ("work", "fish", "play"):
+        anims[f"animation.gnome.{k}"]["loop"] = False
     return {"format_version": "1.8.0", "animations": anims}
 
 for prof, pal in PROF.items():
