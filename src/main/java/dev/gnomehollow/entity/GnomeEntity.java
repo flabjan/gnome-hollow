@@ -8,8 +8,10 @@ import dev.gnomehollow.goal.FishGoal;
 import dev.gnomehollow.goal.HealerBrewGoal;
 import dev.gnomehollow.goal.MusicGoal;
 import dev.gnomehollow.goal.NightHomeGoal;
+import dev.gnomehollow.goal.StayNearHomeGoal;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -17,8 +19,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
@@ -38,13 +40,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
+// GeckoLib 5.5+ gebruikt de basis-package com.geckolib (voorheen software.bernie.geckolib).
+import com.geckolib.animatable.*;
+import com.geckolib.animatable.instance.*;
+import com.geckolib.animatable.manager.*;
+import com.geckolib.animation.*;
+import com.geckolib.animation.state.*;
+import com.geckolib.util.*;
 
 /**
  * Eén klasse voor alle gnomes. Het beroep volgt uit het EntityType (gnome_healer, gnome_warrior, ...),
@@ -108,6 +110,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 			case WARRIOR -> { }
 		}
 
+		this.goalSelector.addGoal(4, new StayNearHomeGoal(this, 28.0));
 		if (p != Profession.WARRIOR) {
 			this.goalSelector.addGoal(4, new NightHomeGoal(this));
 		}
@@ -122,7 +125,6 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 		if (!this.level().isClientSide() && !this.homeSet) {
 			this.homeSet = true;
 			this.homePos = this.blockPosition();
-			this.restrictTo(this.homePos, 32);
 		}
 	}
 
@@ -134,7 +136,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 				&& this.profession() == Profession.HEALER && this.tickCount % 40 == 0 && this.isAlive()) {
 			List<LivingEntity> hurt = server.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(6.0),
 					e -> e != this && e.isAlive() && e.getHealth() < e.getMaxHealth() - 2.0F
-							&& (e instanceof Player || e instanceof GnomeEntity || e.getType() == EntityType.VILLAGER || e.getType() == EntityType.IRON_GOLEM));
+							&& (e instanceof Player || e instanceof GnomeEntity || isFriendlyType(e)));
 			if (!hurt.isEmpty()) {
 				LivingEntity patient = hurt.get(0);
 				patient.heal(4.0F);
@@ -168,6 +170,12 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 			}
 		}
 		super.swing(hand);
+	}
+
+	/** Dorpelingen en ijzergolems tellen mee als 'vriendelijk' voor de Healer (via registry-naam, versie-onafhankelijk). */
+	private static boolean isFriendlyType(LivingEntity e) {
+		String path = BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).getPath();
+		return path.equals("villager") || path.equals("iron_golem");
 	}
 
 	// ---- helpers voor goals ----

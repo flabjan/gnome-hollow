@@ -11,15 +11,12 @@ base {
 }
 
 repositories {
-	exclusiveContent {
-		forRepository {
-			maven {
-				name = "Modrinth"
-				url = "https://api.modrinth.com/maven"
-			}
-		}
-		filter {
-			includeGroup "maven.modrinth"
+	// Officiele GeckoLib-repository (heeft de volledige dependency-info, anders dan Modrinth's maven)
+	maven {
+		name = "GeckoLib"
+		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+		content {
+			includeGroup "com.geckolib"
 		}
 	}
 }
@@ -41,7 +38,7 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// GeckoLib (animaties/modellen). Niet ingebouwd: spelers installeren GeckoLib apart.
-	implementation "maven.modrinth:8BmcQJ2H:${project.geckolib_modrinth_version}"
+	implementation "com.geckolib:geckolib-fabric-${project.minecraft_version}:${project.geckolib_version}"
 }
 
 processResources {

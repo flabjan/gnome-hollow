@@ -1,20 +1,21 @@
 package dev.gnomehollow.client;
 
+import com.geckolib.model.*;
+import com.geckolib.renderer.*;
 import dev.gnomehollow.GnomeHollow;
-import dev.gnomehollow.entity.GnomeEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 /**
  * Model:      assets/gnomehollow/geckolib/models/entity/<naam>.geo.json
  * Animaties:  assets/gnomehollow/geckolib/animations/entity/<naam>.animation.json
  * Texture:    assets/gnomehollow/textures/entity/<naam>.png
+ *
+ * Bewust met "raw types": de generieke parameters van GeoEntityRenderer zijn tussen GeckoLib-versies
+ * gewijzigd (5.5.2 verwijderde de "& GeoRenderState"-generic), zo blijft dit bij kleine updates werken.
  */
-public class GnomeRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<GnomeEntity, R> {
+@SuppressWarnings({"rawtypes", "unchecked"})
+public class GnomeRenderer extends GeoEntityRenderer {
 	public GnomeRenderer(EntityRendererProvider.Context context, String assetName) {
-		super(context, new DefaultedEntityGeoModel<>(GnomeHollow.id(assetName)));
+		super(context, new DefaultedEntityGeoModel(GnomeHollow.id(assetName)));
 	}
 }
