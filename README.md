@@ -18,7 +18,7 @@ Je hebt nodig: **JDK 25** (bijv. Temurin 25) en internet (Gradle downloadt Minec
 Zet de map in een nieuwe GitHub-repo. Het bestand `.github/workflows/build.yml` bouwt de jar; download hem onder Actions > Artifacts.
 
 ## 2. Installeren
-In je mods-map (Fabric): `gnome-hollow-1.0.0.jar` + **Fabric API** (0.158.0+26.2 of nieuwer) + **GeckoLib 5.5.5 (Fabric, 26.2)**. Fabric Loader 0.19.3+ en Java 25.
+In je mods-map (Fabric): `gnome-hollow-1.0.0.jar` + **Fabric API** (0.155.2+26.2 of nieuwer) + **GeckoLib 5.5.3 (Fabric, 26.2)**. Fabric Loader 0.19.3+ en Java 25.
 GeckoLib is de enige extra dependency (voor de modellen en animaties); EMF/ETF zijn niet nodig.
 
 ## 3. Waar vind je alles?
@@ -41,8 +41,8 @@ Plein met een put onder een paddenstoelhoed, lantaarnpalen met paddenstoellampen
 ## 6. Bekende risico's (hier waarschijnlijk eventuele compilefouten)
 Ik had geen internet in mijn werkomgeving, dus niets is gecompileerd. Plekken waar Minecraft 26.2 of GeckoLib 5 mogelijk anders zijn dan ik aannam:
 - Geluiden: `SoundEvent.createVariableRangeEvent`, en de overrides `playStepSound`, `setTarget` en `mobInteract` in `GnomeEntity`.
-- Overige 26.2 API-details zoals `Identifier`, `Level#isBrightOutside()`, `Item.Properties#spawnEgg(..)`, `SoundEvents.NOTE_BLOCK_*.value()` en `HurtByTargetGoal#setAlertOthers()` moeten nog door de echte GitHub-build worden bevestigd.
-- GeckoLib 5: de nieuwe `com.geckolib`-packages, `AnimationController`, `triggerableAnim` en `stopTriggeredAnim`; renderer gebruikt de GeckoLib 5 render-state API.
+- `Identifier` (voorheen `ResourceLocation`), `Level#isBrightOutside()`, `Item.Properties#spawnEgg(..)`, `SoundEvents.NOTE_BLOCK_*.value()`, `HurtByTargetGoal#setAlertOthers()`.
+- GeckoLib 5: `new AnimationController<>(naam, overgangsticks, handler)` (zonder `this`), `triggerableAnim`, `stopTriggeredAnimation("action", null)`, pad `geckolib/models/entity/`, en de generieke renderer in `GnomeRenderer`.
 - Structuren: `DataVersion` staat op 4671 en `start_height` op -3. Staat het dorp een blok te hoog/laag, pas dan `start_height` aan in `data/gnomehollow/worldgen/structure/gnome_village.json`.
 - Animatierichtingen (bijv. arm omhoog) kunnen gespiegeld zijn; aanpassen in `assets/gnomehollow/geckolib/animations/entity/`.
 Plak de foutmeldingen terug in de chat, dan los ik ze op.

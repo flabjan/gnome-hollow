@@ -1,7 +1,7 @@
 package dev.gnomehollow;
 
 import dev.gnomehollow.entity.Profession;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -17,9 +17,9 @@ public final class ModItems {
 			ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, GnomeHollow.id(p.entityName() + "_spawn_egg"));
 			Item egg = new Item(new Item.Properties().setId(key).spawnEgg(ModEntities.TYPES.get(p)));
 			Registry.register(BuiltInRegistries.ITEM, key, egg);
-			CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(e -> e.accept(egg));
+			ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(e -> e.accept(egg));
 		}
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register(e -> {
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS).register(e -> {
 			e.accept(ModBlocks.GNOME_SHINGLES);
 			e.accept(ModBlocks.GNOME_SHINGLE_STAIRS);
 			e.accept(ModBlocks.GNOME_SHINGLE_SLAB);

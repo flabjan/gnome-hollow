@@ -11,20 +11,15 @@ base {
 }
 
 repositories {
-	maven {
-		name = 'Fabric'
-		url = 'https://maven.fabricmc.net/'
-	}
-
 	exclusiveContent {
 		forRepository {
 			maven {
-				name = 'GeckoLib'
-				url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
 			}
 		}
 		filter {
-			includeGroupAndSubgroups 'com.geckolib'
+			includeGroup "maven.modrinth"
 		}
 	}
 }
@@ -33,7 +28,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		'gnomehollow' {
+		"gnomehollow" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
@@ -42,20 +37,22 @@ loom {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	modImplementation "com.geckolib:geckolib-fabric-26.2:${project.geckolib_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// GeckoLib (animaties/modellen). Niet ingebouwd: spelers installeren GeckoLib apart.
+	implementation "maven.modrinth:8BmcQJ2H:${project.geckolib_modrinth_version}"
 }
 
 processResources {
-	inputs.property 'version', project.version
-	filesMatching('fabric.mod.json') {
-		expand 'version': inputs.properties.version
+	inputs.property "version", project.version
+	filesMatching("fabric.mod.json") {
+		expand "version": inputs.properties.version
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.release = 25
+	it.options.release = 25
 }
 
 java {
@@ -65,5 +62,5 @@ java {
 }
 
 jar {
-	inputs.property 'archivesName', project.base.archivesName
+	inputs.property "archivesName", project.base.archivesName
 }

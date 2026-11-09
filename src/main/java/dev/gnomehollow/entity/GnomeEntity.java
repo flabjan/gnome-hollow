@@ -7,7 +7,6 @@ import dev.gnomehollow.goal.FarmGoal;
 import dev.gnomehollow.goal.FishGoal;
 import dev.gnomehollow.goal.HealerBrewGoal;
 import dev.gnomehollow.goal.MusicGoal;
-import dev.gnomehollow.goal.HomeRadiusGoal;
 import dev.gnomehollow.goal.NightHomeGoal;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -18,9 +17,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
@@ -40,13 +38,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import com.geckolib.animatable.GeoEntity;
-import com.geckolib.animatable.instance.AnimatableInstanceCache;
-import com.geckolib.animatable.manager.AnimatableManager;
-import com.geckolib.animation.AnimationController;
-import com.geckolib.animation.object.PlayState;
-import com.geckolib.animation.RawAnimation;
-import com.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * Eén klasse voor alle gnomes. Het beroep volgt uit het EntityType (gnome_healer, gnome_warrior, ...),
@@ -113,12 +111,9 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 		if (p != Profession.WARRIOR) {
 			this.goalSelector.addGoal(4, new NightHomeGoal(this));
 		}
-		// Vervangt de in Minecraft 26.2 verwijderde Mob#restrictTo: overdag blijven
-		// gnomes binnen hun oorspronkelijke thuisradius; 's nachts heeft NightHomeGoal voorrang.
-		this.goalSelector.addGoal(5, new HomeRadiusGoal(this, 32));
-		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.6));
-		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
-		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.6));
+		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 	}
 
 	@Override
@@ -127,6 +122,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 		if (!this.level().isClientSide() && !this.homeSet) {
 			this.homeSet = true;
 			this.homePos = this.blockPosition();
+			this.restrictTo(this.homePos, 32);
 		}
 	}
 
@@ -138,7 +134,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 				&& this.profession() == Profession.HEALER && this.tickCount % 40 == 0 && this.isAlive()) {
 			List<LivingEntity> hurt = server.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(6.0),
 					e -> e != this && e.isAlive() && e.getHealth() < e.getMaxHealth() - 2.0F
-							&& (e instanceof Player || e instanceof GnomeEntity || e.getType() == EntityTypes.VILLAGER || e.getType() == EntityTypes.IRON_GOLEM));
+							&& (e instanceof Player || e instanceof GnomeEntity || e.getType() == EntityType.VILLAGER || e.getType() == EntityType.IRON_GOLEM));
 			if (!hurt.isEmpty()) {
 				LivingEntity patient = hurt.get(0);
 				patient.heal(4.0F);
@@ -208,7 +204,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 
 	public void stopAnim() {
 		if (!this.level().isClientSide()) {
-			this.stopTriggeredAnim("action", null);
+			this.stopTriggeredAnimation("action", null);
 		}
 	}
 

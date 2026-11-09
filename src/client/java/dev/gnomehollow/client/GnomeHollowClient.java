@@ -10,7 +10,7 @@ public final class GnomeHollowClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		for (Profession p : Profession.values()) {
 			String asset = p.entityName();
-			EntityRendererRegistry.register(ModEntities.TYPES.get(p), ctx -> new GnomeRenderer(ctx, asset));
+			EntityRendererRegistry.register(ModEntities.TYPES.get(p), ctx -> new GnomeRenderer<>(ctx, asset));
 		}
 	}
 }
