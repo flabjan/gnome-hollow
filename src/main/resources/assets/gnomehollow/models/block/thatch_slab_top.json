@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "gnomehollow:block/thatch",
-    "top": "gnomehollow:block/thatch",
-    "side": "gnomehollow:block/thatch"
-  }
-}

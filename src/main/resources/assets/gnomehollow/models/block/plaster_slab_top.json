@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "gnomehollow:block/plaster",
-    "top": "gnomehollow:block/plaster",
-    "side": "gnomehollow:block/plaster"
-  }
-}
