@@ -71,16 +71,24 @@ Mac of Linux? Installeer Java 25 en Gradle 9.5.1 (bijvoorbeeld met SDKMAN: `sdk 
 - **Blokken:** creative-tab *Building Blocks*: Toadstool Lamp, Gnome Shingles, trap en plaat (ook craftbaar).
 
 ## C. Het dorp
-Plein met een put onder een paddenstoelhoed, lantaarnpalen met paddenstoellampen, boomstronken voor de band, en 6 heuvelhuisjes (hobbit-stijl met rode shingle-punthoed, ronde ramen, luifel boven de deur). De huizen zitten vast aan het plein: Healer (NW), Warrior (NO), Farmer (ZW), Builder (ZO), Fisherman (W, met vijver en steiger), Nitwits (O). Door rotatie van het dorp wisselen de windrichtingen.
+- **Indeling:** elk dorp begint bij een van drie pleinen (toadstool-put, kampvuur met podium, vijver met standbeeld). Rondom het plein staan 8 huizen, waaronder altijd **een Healer-, Warrior-, Farmer-, Fisherman- en Builder-huis**. Vanuit het midden van elke plein-zijde lopen straten die zich aan het terrein aanpassen, met bochten, T-splitsingen, kruispunten en doodlopende einden. Langs de straten staan willekeurige huizen en decor, dus geen twee dorpen zijn gelijk.
+- **Huizen:** cottages met rieten, rode-shingle of paddenstoelhoed-daken, vakwerk, schoorstenen, veranda's, een huis met twee verdiepingen, heuvelhuizen (hobbit-stijl met boogvormige deur), paddenstoelhuizen, een wachttoren, een bouwplaats, boerderijen met akkers, een viskot met vijver en steiger, en meer. Elk beroepshuis heeft twee varianten.
+- **Decor:** marktkraam, moestuin, kampvuur met stronken, standbeeldje, bijenkorven, vijvertje met bankje, hooibergen, paddenstoelcirkel.
+- **Loot:** kisten en vaten bevatten buit per beroep (drankjes, pijlen, gewassen, vis, bouwmaterialen, enz.).
 
 ## D. Gedrag
 - Altijd neutraal. Overdag werken ze, 's nachts gaan ze naar huis (Warriors blijven op wacht).
+- **Handelen:** rechtsklik op een gnome opent het handelsvenster (zoals bij dorpelingen). Elk beroep heeft eigen ruilhandel; de Builder verkoopt de nieuwe bouwblokken.
 - **Warrior:** valt hostile mobs aan en slaat terug als er een gnome wordt geraakt (alarmeert de rest).
-- **Healer:** loopt naar de brewing stand en brouwt (bubbels/geluid), legt soms een Healing/Regeneration-drankje in een kist. Geneest gewonde spelers, dorpelingen, gnomes en golems binnen 6 blokken.
-- **Fisherman:** zoekt open water, gaat op de oever/steiger staan en vist; de vangst gaat in een barrel in de buurt.
-- **Farmer:** oogst volgroeide tarwe/wortels/aardappels/bieten (alleen rijpe) en plant direct opnieuw.
+- **Healer:** brouwt bij de brewing stand, legt soms een drankje in een kist, en geneest gewonde spelers, dorpelingen, gnomes en golems binnen 6 blokken.
+- **Fisherman:** zoekt open water, vist, en stopt de vangst in een barrel in de buurt.
+- **Farmer:** oogst volgroeide gewassen en plant direct opnieuw.
 - **Builder:** timmert lantaarnpaaltjes rond het dorp (max. 8 per gnome).
-- **Nitwit:** speelt pentatonische muziek; andere nitwits in de buurt doen mee.
+- **Muziek:** een Nitwit begint een liedje (vier korte volksliedjes). Gnomes die toevallig niets te doen hebben komen erbij zitten en spelen een eigen stem (fluit, luit, bas, ritme). Zodra een gnome zijn eigen werk heeft, gaat dat voor.
+- **Uiterlijk:** elk beroep heeft een herkenbare hoed en kleding (Healer wit met groene puntmuts, Warrior harnas met helm en rode pluim, Farmer strohoed en overall, Fisherman geel regenpak, Builder oranje vest met helm, Nitwit paarse slaphoed met bel).
+
+## D2. Nieuwe blokken
+Toadstool Lamp, Gnome Shingles, Thatch (riet), Toadstool Cap (paddenstoelhoed), Plaster (pleisterwerk), Timber Plaster (vakwerk), Gnome Mushroom Stem en Fieldstone (veldkeien). De meeste hebben trap en plaat, en zijn craftbaar of bij de Builder te ruilen (creative-tab *Building Blocks*).
 
 ## E. Bekende risico's (hier zitten waarschijnlijk de eerste compilefouten)
 Ik had geen internet in mijn werkomgeving, dus niets is gecompileerd. Plekken waar Minecraft 26.2 of GeckoLib 5 mogelijk anders zijn dan ik aannam:

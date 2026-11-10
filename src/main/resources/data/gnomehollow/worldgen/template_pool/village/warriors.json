@@ -5,7 +5,16 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "gnomehollow:village/house_warrior",
+        "location": "gnomehollow:village/house_warrior_a",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "gnomehollow:village/house_warrior_b",
         "processors": "minecraft:empty",
         "projection": "rigid"
       }

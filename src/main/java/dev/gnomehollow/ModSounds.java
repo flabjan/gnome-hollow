@@ -8,7 +8,8 @@ import net.minecraft.sounds.SoundEvent;
 /** Alle gnome-stemgeluiden. Bestanden: assets/gnomehollow/sounds/entity/gnome/*.ogg, events in sounds.json. */
 public final class ModSounds {
 	public static SoundEvent AMBIENT, GREET, YES, NO, HURT, DEATH, ATTACK, ALERT, LAUGH, CELEBRATE, FISH_CATCH,
-			WORK_BREW, WORK_FARM, WORK_BUILD, WORK_FISH, HEAL, SNORE, STEP;
+			WORK_BREW, WORK_FARM, WORK_BUILD, WORK_FISH, HEAL, SNORE, STEP,
+			MUSIC_WHISTLE, MUSIC_FIDDLE, MUSIC_LUTE, MUSIC_BASS, MUSIC_DRUM, MUSIC_TAP;
 
 	private ModSounds() {}
 
@@ -36,5 +37,11 @@ public final class ModSounds {
 		HEAL = register("heal");
 		SNORE = register("snore");
 		STEP = register("step");
+		MUSIC_WHISTLE = register("music_whistle");
+		MUSIC_FIDDLE = register("music_fiddle");
+		MUSIC_LUTE = register("music_lute");
+		MUSIC_BASS = register("music_bass");
+		MUSIC_DRUM = register("music_drum");
+		MUSIC_TAP = register("music_tap");
 	}
 }

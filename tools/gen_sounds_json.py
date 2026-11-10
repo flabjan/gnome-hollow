@@ -16,9 +16,11 @@ sub_nl = {"ambient":"Kabouter brabbelt","greet":"Kabouter groet","yes":"Kabouter
 sj = {}
 for g, names in groups.items():
     ev = {"sounds": [{"name": f"gnomehollow:entity/gnome/{n}"} for n in names]}
-    if g == "step":
+    if g.startswith("music"):
+        pass
+    elif g == "step":
         ev["sounds"] = [{"name": f"gnomehollow:entity/gnome/{n}", "volume": 0.6} for n in names]
-    else:
+    if not g.startswith("music") and g != "step":
         ev["subtitle"] = f"subtitles.gnomehollow.gnome.{g}"
     sj[f"entity.gnome.{g}"] = ev
 json.dump(sj, open(f"{A}/sounds.json", "w"), indent=2)

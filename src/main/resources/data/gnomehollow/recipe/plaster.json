@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "key": {
+    "C": "minecraft:clay_ball"
+  },
+  "result": {
+    "id": "gnomehollow:plaster",
+    "count": 4
+  }
+}

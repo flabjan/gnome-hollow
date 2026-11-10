@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": "gnomehollow:fieldstone"
+  },
+  "result": {
+    "id": "gnomehollow:fieldstone_stairs",
+    "count": 4
+  }
+}

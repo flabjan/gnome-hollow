@@ -145,6 +145,48 @@
     ],
     "subtitle": "subtitles.gnomehollow.gnome.laugh"
   },
+  "entity.gnome.music_bass": {
+    "sounds": [
+      {
+        "name": "gnomehollow:entity/gnome/music_bass1"
+      }
+    ]
+  },
+  "entity.gnome.music_drum": {
+    "sounds": [
+      {
+        "name": "gnomehollow:entity/gnome/music_drum1"
+      }
+    ]
+  },
+  "entity.gnome.music_fiddle": {
+    "sounds": [
+      {
+        "name": "gnomehollow:entity/gnome/music_fiddle1"
+      }
+    ]
+  },
+  "entity.gnome.music_lute": {
+    "sounds": [
+      {
+        "name": "gnomehollow:entity/gnome/music_lute1"
+      }
+    ]
+  },
+  "entity.gnome.music_tap": {
+    "sounds": [
+      {
+        "name": "gnomehollow:entity/gnome/music_tap1"
+      }
+    ]
+  },
+  "entity.gnome.music_whistle": {
+    "sounds": [
+      {
+        "name": "gnomehollow:entity/gnome/music_whistle1"
+      }
+    ]
+  },
   "entity.gnome.no": {
     "sounds": [
       {

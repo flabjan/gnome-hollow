@@ -20,10 +20,9 @@ public final class ModItems {
 			CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(output -> output.accept(egg));
 		}
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register(e -> {
-			e.accept(ModBlocks.GNOME_SHINGLES);
-			e.accept(ModBlocks.GNOME_SHINGLE_STAIRS);
-			e.accept(ModBlocks.GNOME_SHINGLE_SLAB);
-			e.accept(ModBlocks.TOADSTOOL_LAMP);
+			for (var block : ModBlocks.ALL) {
+				e.accept(block);
+			}
 		});
 	}
 }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": "gnomehollow:thatch"
+  },
+  "result": {
+    "id": "gnomehollow:thatch_stairs",
+    "count": 4
+  }
+}

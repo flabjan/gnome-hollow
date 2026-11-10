@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "gnomehollow:block/toadstool_cap_slab"
+    },
+    "type=top": {
+      "model": "gnomehollow:block/toadstool_cap_slab_top"
+    },
+    "type=double": {
+      "model": "gnomehollow:block/toadstool_cap"
+    }
+  }
+}

@@ -63,7 +63,7 @@ public abstract class WorkGoal extends Goal {
 			this.cooldown--;
 			return false;
 		}
-		if (!this.gnome.isWorkTime() || this.gnome.getTarget() != null) return false;
+		if (!this.gnome.isWorkTime() || this.gnome.getTarget() != null || this.gnome.isTrading()) return false;
 		this.cooldown = this.nextCooldown();
 		return this.findTarget(level);
 	}
@@ -98,7 +98,7 @@ public abstract class WorkGoal extends Goal {
 			this.started = true;
 			this.ticks = 0;
 			this.gnome.startAnim(this.animation());
-			this.gnome.voice(this.workSound(), 0.8F);
+			if (this.gnome.getRandom().nextInt(3) == 0) this.gnome.voice(this.workSound(), 0.7F);
 		}
 		this.work(level, this.ticks);
 		this.ticks++;
@@ -110,7 +110,7 @@ public abstract class WorkGoal extends Goal {
 		if (this.gnome.level() instanceof ServerLevel level) {
 			boolean completed = this.started && this.ticks >= this.duration();
 			this.finish(level, completed);
-			if (completed && this.celebrates()) this.gnome.voice(ModSounds.CELEBRATE, 0.8F);
+			if (completed && this.celebrates() && this.gnome.getRandom().nextInt(4) == 0) this.gnome.voice(ModSounds.CELEBRATE, 0.7F);
 		}
 		this.started = false;
 	}

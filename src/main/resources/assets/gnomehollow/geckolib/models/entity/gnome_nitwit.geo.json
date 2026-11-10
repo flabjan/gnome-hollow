@@ -4,8 +4,8 @@
     {
       "description": {
         "identifier": "geometry.gnome_nitwit",
-        "texture_width": 64,
-        "texture_height": 64,
+        "texture_width": 128,
+        "texture_height": 128,
         "visible_bounds_width": 2,
         "visible_bounds_height": 2,
         "visible_bounds_offset": [
@@ -100,6 +100,38 @@
               "uv": [
                 0,
                 12
+              ]
+            },
+            {
+              "origin": [
+                -3,
+                7,
+                -2
+              ],
+              "size": [
+                6,
+                1,
+                4
+              ],
+              "uv": [
+                0,
+                48
+              ]
+            },
+            {
+              "origin": [
+                -0.5,
+                5.8,
+                -2.2
+              ],
+              "size": [
+                1,
+                1,
+                1
+              ],
+              "uv": [
+                20,
+                48
               ]
             }
           ]
@@ -239,7 +271,7 @@
               ],
               "uv": [
                 0,
-                28
+                40
               ]
             },
             {
@@ -254,13 +286,13 @@
                 5
               ],
               "uv": [
-                0,
-                38
+                28,
+                40
               ]
             },
             {
               "origin": [
-                -1.5,
+                0,
                 15,
                 -1.5
               ],
@@ -270,8 +302,24 @@
                 3
               ],
               "uv": [
-                0,
-                46
+                48,
+                40
+              ]
+            },
+            {
+              "origin": [
+                2.5,
+                14,
+                -0.5
+              ],
+              "size": [
+                1,
+                1,
+                1
+              ],
+              "uv": [
+                60,
+                40
               ]
             }
           ]

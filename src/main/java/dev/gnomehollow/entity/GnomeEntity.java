@@ -1,5 +1,6 @@
 package dev.gnomehollow.entity;
 
+import dev.gnomehollow.GnomeTrades;
 import dev.gnomehollow.ModSounds;
 import dev.gnomehollow.goal.AlertAvoidGoal;
 import dev.gnomehollow.goal.BuildGoal;
@@ -36,6 +37,10 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.Merchant;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -52,7 +57,7 @@ import com.geckolib.util.*;
  * Eén klasse voor alle gnomes. Het beroep volgt uit het EntityType (gnome_healer, gnome_warrior, ...),
  * zodat elk beroep een eigen model/texture kan krijgen zonder gesynchroniseerde data.
  */
-public class GnomeEntity extends PathfinderMob implements GeoEntity {
+public class GnomeEntity extends PathfinderMob implements GeoEntity, Merchant {
 	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.gnome.idle");
 	private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.gnome.walk");
 	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.gnome.attack");
@@ -71,6 +76,12 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 	private String actionAnim;
 	private int actionPeriod;
 	private int greetCooldown = 100;
+	private int lastVoiceTick = -1000;
+	private Player tradingPlayer;
+	private MerchantOffers offers;
+	private int musicSong;
+	private int musicPart;
+	private long musicEnd;
 
 	public GnomeEntity(EntityType<? extends GnomeEntity> type, Level level) {
 		super(type, level);
@@ -111,7 +122,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 			case HEALER -> this.goalSelector.addGoal(3, new HealerBrewGoal(this));
 			case FARMER -> this.goalSelector.addGoal(3, new FarmGoal(this));
 			case BUILDER -> this.goalSelector.addGoal(3, new BuildGoal(this));
-			case NITWIT -> this.goalSelector.addGoal(3, new MusicGoal(this));
+			case NITWIT -> { }
 			case WARRIOR -> { }
 		}
 
@@ -119,9 +130,10 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 		if (p != Profession.WARRIOR) {
 			this.goalSelector.addGoal(4, new NightHomeGoal(this));
 		}
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.6));
-		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(5, new MusicGoal(this));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.6));
+		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	}
 
 	@Override
@@ -152,6 +164,19 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 				this.voice(ModSounds.HEAL, 1.0F);
 			}
 		}
+		// Tijdens het handelen blijft de gnome staan en kijkt naar de speler.
+		if (!this.level().isClientSide() && this.tradingPlayer != null) {
+			if (!this.tradingPlayer.isAlive() || this.distanceToSqr(this.tradingPlayer) > 100.0) {
+				this.tradingPlayer = null;
+			} else {
+				this.getNavigation().stop();
+				this.getLookControl().setLookAt(this.tradingPlayer);
+			}
+		}
+		// Elke dag een nieuwe voorraad.
+		if (!this.level().isClientSide() && this.tradingPlayer == null && this.tickCount % 24000 == 23999) {
+			this.offers = null;
+		}
 		// Werk-animatie herhalen zolang de gnome aan het werk is.
 		if (!this.level().isClientSide() && this.actionAnim != null && this.tickCount % this.actionPeriod == 0) {
 			this.triggerAnim("action", this.actionAnim);
@@ -164,7 +189,7 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 				Player p = this.level().getNearestPlayer(this, 4.0);
 				if (p != null && !p.isSpectator() && this.hasLineOfSight(p)) {
 					this.voice(ModSounds.GREET, 1.0F);
-					this.greetCooldown = 1200 + this.random.nextInt(600);
+					this.greetCooldown = 2400 + this.random.nextInt(1200);
 				}
 			}
 		}
@@ -266,6 +291,10 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 	/** Speelt een stemgeluid met een lichte willekeurige variatie af (alleen server-kant aanroepen). */
 	public void voice(SoundEvent sound, float volume) {
 		if (sound == null || this.level().isClientSide()) return;
+		boolean important = sound == ModSounds.ATTACK || sound == ModSounds.ALERT || sound == ModSounds.YES
+				|| sound == ModSounds.NO || sound == ModSounds.HEAL || sound == ModSounds.GREET;
+		if (!important && this.tickCount - this.lastVoiceTick < 300) return;   // niet constant kwetteren
+		this.lastVoiceTick = this.tickCount;
 		this.playSound(sound, volume, this.voicePitch() + (this.random.nextFloat() - 0.5F) * 0.12F);
 	}
 
@@ -276,7 +305,14 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 				&& this.distanceToSqr(this.homePos.getX() + 0.5, this.homePos.getY(), this.homePos.getZ() + 0.5) < 36.0) {
 			return ModSounds.SNORE;
 		}
+		// Alleen brabbelen als er een speler in de buurt is om het te horen.
+		if (this.level().getNearestPlayer(this, 12.0) == null) return null;
 		return ModSounds.AMBIENT;
+	}
+
+	@Override
+	public int getAmbientSoundInterval() {
+		return 1800;
 	}
 
 	@Override
@@ -291,7 +327,9 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(ModSounds.STEP, 0.35F, 0.9F + this.random.nextFloat() * 0.3F);
+		if (this.random.nextInt(2) == 0) {
+			this.playSound(ModSounds.STEP, 0.2F, 0.9F + this.random.nextFloat() * 0.3F);
+		}
 	}
 
 	@Override
@@ -303,14 +341,89 @@ public class GnomeEntity extends PathfinderMob implements GeoEntity {
 		}
 	}
 
-	/** Rechtsklik: overdag een vrolijke "ja!", 's nachts een chagrijnig "nee". */
+	/** Rechtsklik opent het handelsvenster (zoals bij dorpelingen). */
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-		if (!this.level().isClientSide()) {
+		if (!this.level().isClientSide() && this.isAlive() && this.tradingPlayer == null) {
+			this.tradingPlayer = player;
 			this.getLookControl().setLookAt(player);
-			this.voice(this.isWorkTime() ? ModSounds.YES : ModSounds.NO, 1.0F);
+			this.voice(ModSounds.YES, 1.0F);
+			this.openTradingScreen(player, this.getDisplayName(), 1);
 		}
 		return InteractionResult.SUCCESS;
+	}
+
+	// ---- handel (Merchant) ----
+
+	public boolean isTrading() {
+		return this.tradingPlayer != null;
+	}
+
+	public void setTradingPlayer(Player player) {
+		this.tradingPlayer = player;
+	}
+
+	public Player getTradingPlayer() {
+		return this.tradingPlayer;
+	}
+
+	public MerchantOffers getOffers() {
+		if (this.offers == null) {
+			this.offers = new MerchantOffers();
+			GnomeTrades.fill(this.offers, this.profession());
+		}
+		return this.offers;
+	}
+
+	public void overrideOffers(MerchantOffers newOffers) {
+		this.offers = newOffers;
+	}
+
+	public void notifyTrade(MerchantOffer offer) {
+		offer.increaseUses();
+		this.voice(ModSounds.CELEBRATE, 1.0F);
+	}
+
+	public void notifyTradeUpdated(ItemStack stack) {
+	}
+
+	public int getVillagerXp() {
+		return 0;
+	}
+
+	public void overrideXp(int xp) {
+	}
+
+	public boolean showProgressBar() {
+		return false;
+	}
+
+	public SoundEvent getNotifyTradeSound() {
+		return ModSounds.YES;
+	}
+
+	public boolean isClientSide() {
+		return this.level().isClientSide();
+	}
+
+	// ---- samen muziek maken ----
+
+	public int musicSong() {
+		return this.musicSong;
+	}
+
+	public int musicPart() {
+		return this.musicPart;
+	}
+
+	public long musicEnd() {
+		return this.musicEnd;
+	}
+
+	public void setMusic(int song, int part, long endTick) {
+		this.musicSong = song;
+		this.musicPart = part;
+		this.musicEnd = endTick;
 	}
 
 	// ---- GeckoLib ----
