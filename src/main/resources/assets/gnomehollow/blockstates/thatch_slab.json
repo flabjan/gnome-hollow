@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "gnomehollow:block/thatch_slab"
+    },
+    "type=top": {
+      "model": "gnomehollow:block/thatch_slab_top"
+    },
+    "type=double": {
+      "model": "gnomehollow:block/thatch"
+    }
+  }
+}

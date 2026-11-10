@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "gnomehollow:block/toadstool_cap",
+    "top": "gnomehollow:block/toadstool_cap",
+    "side": "gnomehollow:block/toadstool_cap"
+  }
+}

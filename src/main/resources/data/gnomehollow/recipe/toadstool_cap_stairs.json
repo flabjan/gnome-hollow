@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": "gnomehollow:toadstool_cap"
+  },
+  "result": {
+    "id": "gnomehollow:toadstool_cap_stairs",
+    "count": 4
+  }
+}
