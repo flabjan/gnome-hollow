@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:red_mushroom",
+    "minecraft:glowstone_dust"
+  ],
+  "result": {
+    "id": "gnomehollow:toadstool_lamp",
+    "count": 1
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": "gnomehollow:plaster"
+  },
+  "result": {
+    "id": "gnomehollow:plaster_slab",
+    "count": 6
+  }
+}

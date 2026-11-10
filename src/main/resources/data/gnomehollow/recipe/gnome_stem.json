@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:mushroom_stem"
+  ],
+  "result": {
+    "id": "gnomehollow:gnome_stem",
+    "count": 1
+  }
+}
