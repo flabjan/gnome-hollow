@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "gnomehollow:block/plaster",
-    "top": "gnomehollow:block/plaster",
-    "side": "gnomehollow:block/plaster"
-  }
-}

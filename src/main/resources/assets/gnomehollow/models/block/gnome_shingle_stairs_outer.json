@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "gnomehollow:block/gnome_shingles",
-    "top": "gnomehollow:block/gnome_shingles",
-    "side": "gnomehollow:block/gnome_shingles"
-  }
-}

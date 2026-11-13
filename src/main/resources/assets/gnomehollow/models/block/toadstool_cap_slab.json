@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "gnomehollow:block/toadstool_cap",
-    "top": "gnomehollow:block/toadstool_cap",
-    "side": "gnomehollow:block/toadstool_cap"
-  }
-}
