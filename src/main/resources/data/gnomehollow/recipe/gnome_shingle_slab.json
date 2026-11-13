@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": "gnomehollow:gnome_shingles"
+  },
+  "result": {
+    "id": "gnomehollow:gnome_shingle_slab",
+    "count": 6
+  }
+}

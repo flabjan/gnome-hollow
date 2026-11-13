@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "gnomehollow:block/plaster_slab"
+    },
+    "type=top": {
+      "model": "gnomehollow:block/plaster_slab_top"
+    },
+    "type=double": {
+      "model": "gnomehollow:block/plaster"
+    }
+  }
+}

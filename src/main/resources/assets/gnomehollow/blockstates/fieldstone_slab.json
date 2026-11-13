@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "gnomehollow:block/fieldstone_slab"
+    },
+    "type=top": {
+      "model": "gnomehollow:block/fieldstone_slab_top"
+    },
+    "type=double": {
+      "model": "gnomehollow:block/fieldstone"
+    }
+  }
+}

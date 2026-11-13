@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "gnomehollow:gnome_shingles",
+    "gnomehollow:gnome_shingle_stairs",
+    "gnomehollow:gnome_shingle_slab",
+    "gnomehollow:plaster",
+    "gnomehollow:plaster_stairs",
+    "gnomehollow:plaster_slab",
+    "gnomehollow:timber_plaster",
+    "gnomehollow:fieldstone",
+    "gnomehollow:fieldstone_stairs",
+    "gnomehollow:fieldstone_slab"
+  ]
+}
